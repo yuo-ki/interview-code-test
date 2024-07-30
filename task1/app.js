@@ -15,6 +15,32 @@ class Task {
     }
 }
 
+// 检查用户名和密码
+function checkCredentials(username, password) {
+    // 考虑时间原因，这里硬编码用户名和密码（明文存储不合适）
+    // 其他方式：1.从配置文件或数据库获取 2.JWT 3.单点登录 4.OAuth 5.会话Session
+    const validUsername = 'mss_user';
+    const validPassword = 'mss_password';
+    return username === validUsername && password === validPassword;
+}
+
+// 中间件验证用户名和密码
+app.use((req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+        const base64Credentials = authHeader.split(' ')[1];
+        const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
+        const [username, password] = credentials.split(':');
+        if (checkCredentials(username, password)) {
+            next();
+        } else {
+            res.status(401).send('Unauthorized');
+        }
+    } else {
+        res.status(401).send('Unauthorized');
+    }
+});
+
 // 读task
 function readTasks() {
     try {
