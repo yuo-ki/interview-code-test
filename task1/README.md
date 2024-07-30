@@ -1,1 +1,9 @@
 Please put the HTTP web service code in this folder.
+第一步：选择Node.js
+Node.js具有http模块来创建简单的HTTP服务器
+第二步：使用框架而不是http模块来实现HTTP服务器
+框架提供了更高级的抽象和封装，集成了常用的功能模块和中间件，有更规范和清晰的代码结构，提供了更完善的错误处理机制。
+如果选择http模块，需要处理繁琐的底层细节。
+第三步：选择Express框架
+Node.js项目可以选择的框架包括：Express、Koa、NestJS、Fastify、Hapi。
+由于Express框架简单易用、适合初学者、灵活、资源丰富、适合处理小型简单任务，是构建web应用快速且轻量的框架，所以选择Express框架。
