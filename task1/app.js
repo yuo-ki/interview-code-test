@@ -66,6 +66,21 @@ app.get('/tasks', (req, res) => {
     res.status(200).json(tasks);
 });
 
+// 修改任务
+app.put('/tasks/:id', (req, res) => {
+    const id = req.params.id;
+    const tasks = readTasks();
+    const taskToModify = tasks.find(task => task.id === id);
+    if (taskToModify) {
+        taskToModify.taskName = req.body.taskName || taskToModify.taskName;
+        taskToModify.dueDay = req.body.dueDay || taskToModify.dueDay;
+        writeTasks(tasks);
+        res.status(200).json(taskToModify);
+    } else {
+        res.status(404).send('Task not found');
+    }
+});
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
