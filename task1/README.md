@@ -20,3 +20,7 @@ Bug2:
 task添加失败: TypeError [ERR_INVALID_ARG_TYPE]: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Task
 Solution:
 转换传入fs模块文件处理方法的参数格式
+
+有待优化的地方：
+考虑时间原因，在实现用户认证时，代码中硬编码用户名和密码（明文存储不合适）
+其他方式：1.从配置文件或数据库获取 2.JWT 3.单点登录 4.OAuth 5.会话Session
