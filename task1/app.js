@@ -50,6 +50,15 @@ app.post('/tasks', (req, res) => {
     res.status(201).json(newTask);
 });
 
+// 删除task
+app.delete('/tasks/:id', (req, res) => {
+    const id = req.params.id;
+    const tasks = readTasks();
+    const updatedTasks = tasks.filter(task => task.id!== id);
+    writeTasks(updatedTasks);
+    res.status(204).send();
+});
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
