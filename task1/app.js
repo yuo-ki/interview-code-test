@@ -81,6 +81,18 @@ app.put('/tasks/:id', (req, res) => {
     }
 });
 
+// read task detail
+app.get('/tasks/:id', (req, res) => {
+    const id = req.params.id;
+    const tasks = readTasks();
+    const task = tasks.find(task => task.id === id);
+    if (task) {
+        res.status(200).json(task);
+    } else {
+        res.status(404).send('Task not found');
+    }
+});
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
