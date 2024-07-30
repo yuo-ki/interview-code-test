@@ -59,6 +59,13 @@ app.delete('/tasks/:id', (req, res) => {
     res.status(204).send();
 });
 
+// list all tasks by dueDay
+app.get('/tasks', (req, res) => {
+    const tasks = readTasks();
+    tasks.sort((a, b) => a.dueDay.localeCompare(b.dueDay));
+    res.status(200).json(tasks);
+});
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });

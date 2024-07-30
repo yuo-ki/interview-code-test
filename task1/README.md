@@ -9,3 +9,14 @@ Node.js项目可以选择的框架包括：Express、Koa、NestJS、Fastify、Ha
 由于Express框架简单易用、适合初学者、灵活、资源丰富、适合处理小型简单任务，是构建web应用快速且轻量的框架，所以选择Express框架。
 
 本地测试工具：postman
+
+Debug过程总结：
+Bug1:
+Cannot read properties of undefined (reading 'taskName')
+Solution:
+代码中添加语句：app.use(express.json())
+
+Bug2:
+task添加失败: TypeError [ERR_INVALID_ARG_TYPE]: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Task
+Solution:
+转换传入fs模块文件处理方法的参数格式
