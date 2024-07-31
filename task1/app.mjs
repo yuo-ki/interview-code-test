@@ -42,84 +42,126 @@ app.use((req, res, next) => {
     }
 });
 
-// Read task
-function readTasks() {
-    try {
-        // Two reading methods: asynchronous and synchronous. 
-        // Choose synchronous reading method here. 
-        // Reason: The number of requests is small and it won't cause blocking. Asynchronous reading requires additional efforts to ensure successful reading. 
-        const data = fs.readFileSync(filePath, 'utf-8');
-        const lines = data.split('\n');
+// Read task with stream processing
+async function readTasks() {
+    return new Promise((resolve, reject) => {
         const tasks = [];
-        for (let line of lines) {
-            if (line.trim() !== '') {
-                const [id, taskName, dueDay] = line.split(',');
-                tasks.push(new Task(id, taskName, dueDay));
+        const readStream = fs.createReadStream(filePath, 'utf-8');
+
+        readStream.on('data', (chunk) => {
+            const lines = chunk.split('\n');
+            for (let line of lines) {
+                if (line.trim() !== '') {
+                    const [id, taskName, dueDay] = line.split(',');
+                    tasks.push(new Task(id, taskName, dueDay));
+                }
             }
-        }
-        return tasks;
-    } catch (err) {
-        return [];
-    }
+        });
+
+        readStream.on('end', () => {
+            resolve(tasks);
+        });
+
+        readStream.on('error', (err) => {
+            reject(err);
+        });
+    });
 }
 
-// Write tasks
+// Write task with stream processing
 function writeTasks(tasks) {
-    const data = tasks.map(task => `${task.id},${task.taskName},${task.dueDay}`).join('\n');
-    fs.writeFileSync(filePath, data, 'utf-8');
+    const writeStream = fs.createWriteStream(filePath);
+    tasks.forEach(task => {
+        const line = `${task.id},${task.taskName},${task.dueDay}\n`;
+        writeStream.write(line, (err) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+        });
+    });
+    writeStream.end((err) => {
+        if (err) {
+            console.error(err);
+        }
+    });
 }
 
 app.use(express.json())
-// Add task
-app.post('/tasks', (req, res) => {
+
+// Add task api
+app.post('/tasks', async (req, res) => {
     const newTask = new Task(Date.now().toString(), req.body.taskName, req.body.dueDay);
-    const tasks = readTasks();
-    tasks.push(newTask);
-    writeTasks(tasks);
-    res.status(201).json(newTask);
+    try {
+        const tasks = await readTasks();
+        tasks.push(newTask);
+        writeTasks(tasks);
+        res.status(201).json(newTask);
+    } catch (err) {
+        console.error(err);
+    }
+
 });
 
-// Delete task
-app.delete('/tasks/:id', (req, res) => {
+// Delete task api
+app.delete('/tasks/:id', async (req, res) => {
     const id = req.params.id;
-    const tasks = readTasks();
-    const updatedTasks = tasks.filter(task => task.id !== id);
-    writeTasks(updatedTasks);
-    res.status(204).send();
+    try {
+        const tasks = await readTasks();
+        const updatedTasks = tasks.filter(task => task.id !== id);
+        writeTasks(updatedTasks);
+        res.status(204).send();
+    } catch (err) {
+        console.error(err);
+    }
+
 });
 
-// List all tasks by dueDay
-app.get('/tasks', (req, res) => {
-    const tasks = readTasks();
-    tasks.sort((a, b) => a.dueDay.localeCompare(b.dueDay));
-    res.status(200).json(tasks);
+// Get all tasks by due day
+app.get('/tasks', async (req, res) => {
+    try {
+        const tasks = await readTasks();
+        tasks.sort((a, b) => a.dueDay.localeCompare(b.dueDay));
+        res.status(200).json(tasks);
+    } catch (err) {
+        console.error(err);
+    }
 });
 
 // Update task
-app.put('/tasks/:id', (req, res) => {
+app.put('/tasks/:id', async (req, res) => {
     const id = req.params.id;
-    const tasks = readTasks();
-    const taskToModify = tasks.find(task => task.id === id);
-    if (taskToModify) {
-        taskToModify.taskName = req.body.taskName || taskToModify.taskName;
-        taskToModify.dueDay = req.body.dueDay || taskToModify.dueDay;
-        writeTasks(tasks);
-        res.status(200).json(taskToModify);
-    } else {
-        res.status(404).send('Task not found');
+    try {
+        const tasks = await readTasks();
+        const taskToModify = tasks.find(task => task.id === id);
+        if (taskToModify) {
+            taskToModify.taskName = req.body.taskName || taskToModify.taskName;
+            taskToModify.dueDay = req.body.dueDay || taskToModify.dueDay;
+            writeTasks(tasks);
+            res.status(200).json(taskToModify);
+        } else {
+            res.status(404).send('Task not found');
+        }
+    } catch (err) {
+        console.error(err);
     }
 });
 
-// Read task detail
-app.get('/tasks/:id', (req, res) => {
+// Get task detail
+app.get('/tasks/:id', async (req, res) => {
     const id = req.params.id;
-    const tasks = readTasks();
-    const task = tasks.find(task => task.id === id);
-    if (task) {
-        res.status(200).json(task);
-    } else {
-        res.status(404).send('Task not found');
+    try {
+        const tasks = await readTasks();
+        const task = tasks.find(task => task.id === id);
+        if (task) {
+            res.status(200).json(task);
+        } else {
+            res.status(404).send('Task not found');
+        }
+    } catch (err) {
+        console.error(err);
     }
+
 });
 
 app.listen(3000, () => {

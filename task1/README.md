@@ -27,3 +27,7 @@ Convert parameter format of file processing method passed into the fs module.
 Areas to be optimized:
 Considering time, when implementing user authentication, the username and password are hardcoded in the code, password plaintext storage is not appropriate.
 Other methods: 1. Obtain from configuration files or databases 2. JWT 3. Single sign-on 4. OAuth 5. Session 
+
+Refactoring and Optimization：
+First, after understanding ES6 modularization, the require method used at the beginning was changed to import method. 
+Second, after understanding the streaming processing, the originally adopted file synchronous reading method was changed to streaming processing. During the processing, asynchronous situations need to be handled.  
