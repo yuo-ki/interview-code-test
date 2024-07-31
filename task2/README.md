@@ -12,7 +12,7 @@
 3. Call the `sort` command for sorting  
 4. Call the `uniq` command for deduplication 
 5. Call the `uniq -c` command for deduplication and counting, then add the number of occurrences of each unique line before the line.  
-6. Call the `awk '{print $2, $1}'` command. Input record of each line is divided into multiple fields. Output the second field and the first field, separated by a space.  
-7. The input processed by the `awk` command is the output of the `uniq -c` command, that is, the data like `count city` is converted to `city count` and then output.  
+6. Call the `awk '{print $1, $2}'` command. Output the first field and the second field, separated by a space.  
+7. The input processed by the `awk` command is the output of the `uniq -c` command, that is, output the data like `count city` format.  
 8. After running the command `bash distinctAndCountChineseCities.sh`, the result file `distinct_and_count_chinese_cities.txt` is obtained.  
 

@@ -10,7 +10,7 @@ output_file="distinct_and_count_chinese_cities.txt"
 chinese_cities=$(awk -F',' '{if($2=="CN") print $4}' $input_file | sort | uniq)
 
 # Count occurrences of each city in China
-city_counts=$(awk -F',' '{if($2=="CN") print $4}' $input_file | sort | uniq -c | awk '{print $2, $1}')
+city_counts=$(awk -F',' '{if($2=="CN") print $4}' $input_file | sort | uniq -c | awk '{print $1, $2}')
 
 # Write results to the output file
 echo "$city_counts" > $output_file
