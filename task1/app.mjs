@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 //存储数据可以存储在内存，由于题目要求，这里引入文件模块
-const fs = require('fs');
+import fs from 'fs';
 const app = express();
 
 // 存储task的本地文件路径
