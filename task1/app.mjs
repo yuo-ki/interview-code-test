@@ -1,12 +1,13 @@
 import express from 'express';
-//存储数据可以存储在内存，由于题目要求，这里引入文件模块
+//Store data can be stored in memory. Due to requirements of the question, the file module is introduced here. 
 import fs from 'fs';
 const app = express();
 
-// 存储task的本地文件路径
+// The local file path to store tasks  
 const filePath = './tasks.txt';
 
-// 定义task的数据结构，题目中只给定了due day这一个属性，id用来标识task，自定义属性taskName
+// Define data structure of task. In the question, only the due day attribute is given. 
+// The new "id" field uniquely identifies task, and the new field "taskName" is added.   
 class Task {
     constructor(id, taskName, dueDay) {
         this.id = id;
@@ -15,16 +16,16 @@ class Task {
     }
 }
 
-// 检查用户名和密码
+// Check the username and password  
 function checkCredentials(username, password) {
-    // 考虑时间原因，这里硬编码用户名和密码（明文存储不合适）
-    // 其他方式：1.从配置文件或数据库获取 2.JWT 3.单点登录 4.OAuth 5.会话Session
+    // Considering time, the username and password are hardcoded here. It is not appropriate to store password in plaintext. 
+    // Other methods: 1. Obtain from configuration files or databases 2. JWT 3. Single sign-on 4. OAuth 5. Session 
     const validUsername = 'mss_user';
     const validPassword = 'mss_password';
     return username === validUsername && password === validPassword;
 }
 
-// 中间件验证用户名和密码
+// Use middleware to verify username and password  
 app.use((req, res, next) => {
     const authHeader = req.headers.authorization;
     if (authHeader) {
@@ -41,10 +42,12 @@ app.use((req, res, next) => {
     }
 });
 
-// 读task
+// Read task
 function readTasks() {
     try {
-        //两种读取：异步和同步，选择同步读取方式，原因：请求量少，不会阻塞，异步需要额外工作量保证读取成功
+        // Two reading methods: asynchronous and synchronous. 
+        // Choose synchronous reading method here. 
+        // Reason: The number of requests is small and it won't cause blocking. Asynchronous reading requires additional efforts to ensure successful reading. 
         const data = fs.readFileSync(filePath, 'utf-8');
         const lines = data.split('\n');
         const tasks = [];
@@ -60,14 +63,14 @@ function readTasks() {
     }
 }
 
-// 写tasks
+// Write tasks
 function writeTasks(tasks) {
     const data = tasks.map(task => `${task.id},${task.taskName},${task.dueDay}`).join('\n');
     fs.writeFileSync(filePath, data, 'utf-8');
 }
 
 app.use(express.json())
-// 添加task
+// Add task
 app.post('/tasks', (req, res) => {
     const newTask = new Task(Date.now().toString(), req.body.taskName, req.body.dueDay);
     const tasks = readTasks();
@@ -76,23 +79,23 @@ app.post('/tasks', (req, res) => {
     res.status(201).json(newTask);
 });
 
-// 删除task
+// Delete task
 app.delete('/tasks/:id', (req, res) => {
     const id = req.params.id;
     const tasks = readTasks();
-    const updatedTasks = tasks.filter(task => task.id!== id);
+    const updatedTasks = tasks.filter(task => task.id !== id);
     writeTasks(updatedTasks);
     res.status(204).send();
 });
 
-// list all tasks by dueDay
+// List all tasks by dueDay
 app.get('/tasks', (req, res) => {
     const tasks = readTasks();
     tasks.sort((a, b) => a.dueDay.localeCompare(b.dueDay));
     res.status(200).json(tasks);
 });
 
-// 修改任务
+// Update task
 app.put('/tasks/:id', (req, res) => {
     const id = req.params.id;
     const tasks = readTasks();
@@ -107,7 +110,7 @@ app.put('/tasks/:id', (req, res) => {
     }
 });
 
-// read task detail
+// Read task detail
 app.get('/tasks/:id', (req, res) => {
     const id = req.params.id;
     const tasks = readTasks();

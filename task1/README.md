@@ -1,29 +1,29 @@
 Please put the HTTP web service code in this folder.
 
-第一步：选择Node.js
-Node.js具有http模块来创建简单的HTTP服务器
+Step 1: Choose Node.js
+Node.js has the http module to create a simple HTTP server 
 
-第二步：使用框架而不是http模块来实现HTTP服务器
-框架提供了更高级的抽象和封装，集成了常用的功能模块和中间件，有更规范和清晰的代码结构，提供了更完善的错误处理机制。
-如果选择http模块，需要处理繁琐的底层细节。
+Step 2: Use a framework instead of the http module to implement the HTTP server.
+Frameworks provide more advanced abstractions and encapsulations, integrate common functional modules and middleware, have a more standardized and clear code structure, and provide a more complete error handling mechanism.
+If choosing http module, complicated underlying details need to be handled. 
 
-第三步：选择Express框架
-Node.js项目可以选择的框架包括：Express、Koa、NestJS、Fastify、Hapi。
-由于Express框架简单易用、适合初学者、灵活、资源丰富、适合处理小型简单任务，是构建web应用快速且轻量的框架，所以选择Express框架。
+Step 3: Choose the Express framework.
+The frameworks that can be selected for Node.js projects include: Express, Koa, NestJS, Fastify, Hapi.
+Because the Express framework is simple and easy to use, suitable for beginners, flexible, rich in resources, and suitable for handling small and simple tasks, it is a fast and lightweight framework for building web applications. Therefore, the Express framework is chosen. 
 
-本地测试工具：postman
+Local test tool：postman
 
-Debug过程总结：
+Debug process summary：
 Bug1:
 Cannot read properties of undefined (reading 'taskName')
 Solution:
-代码中添加语句：app.use(express.json())
+Add a statement in code：app.use(express.json())
 
 Bug2:
-task添加失败: TypeError [ERR_INVALID_ARG_TYPE]: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Task
+Task addition failed: TypeError [ERR_INVALID_ARG_TYPE]: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Task.
 Solution:
-转换传入fs模块文件处理方法的参数格式
+Convert parameter format of file processing method passed into the fs module. 
 
-有待优化的地方：
-考虑时间原因，在实现用户认证时，代码中硬编码用户名和密码（明文存储不合适）
-其他方式：1.从配置文件或数据库获取 2.JWT 3.单点登录 4.OAuth 5.会话Session
+Areas to be optimized:
+Considering time, when implementing user authentication, the username and password are hardcoded in the code, password plaintext storage is not appropriate.
+Other methods: 1. Obtain from configuration files or databases 2. JWT 3. Single sign-on 4. OAuth 5. Session 
