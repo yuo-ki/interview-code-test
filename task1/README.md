@@ -1,6 +1,6 @@
 Please put the HTTP web service code in this folder.
 
-## Step 1：Choose Node.js
+## Step 1: Choose Node.js
 Node.js has the http module to create a simple HTTP server 
 
 ## Step 2: Use a framework instead of the http module to implement the HTTP server
@@ -19,12 +19,12 @@ postman
 ### Bug1
 Cannot read properties of undefined (reading 'taskName')
 ### Solution
-Add a statement in code：app.use(express.json())
+Add a statement in code：`app.use(express.json())`
 
 ### Bug2
-Task addition failed: TypeError [ERR_INVALID_ARG_TYPE]: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Task.
+Task addition failed: `TypeError [ERR_INVALID_ARG_TYPE]: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Task.`
 ### Solution
-Convert parameter format of file processing method passed into the fs module. 
+Convert parameter format of file processing method passed into the `fs` module. 
 
 ## Areas to be optimized
 - Considering time, when implementing user authentication, the username and password are hardcoded in the code.
@@ -37,5 +37,5 @@ Convert parameter format of file processing method passed into the fs module.
 5. Session 
 
 ## Refactoring and Optimization
-- First, after understanding ES6 modularization, the require method used at the beginning was changed to import method. 
-- Second, after understanding the streaming processing, the originally adopted file synchronous reading method was changed to streaming processing. During the processing, asynchronous situations need to be handled.  
+- Firstly, after understanding ES6 modularization, the require method used at the beginning was changed to import method. 
+- Secondly, after understanding the streaming processing, the originally adopted file synchronous reading method was changed to streaming processing. During the processing, asynchronous situations need to be handled.  
