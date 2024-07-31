@@ -1,10 +1,18 @@
-观察输入文件的数据结构 52.98.23.160/27,ZA,,JOHANNESBURG,
-字段以 , 分隔
-过滤第2个字段为"CN"的所有数据，$2=="CN"，输出对应数据的第4个字段，print $4，即得到所有的中国城市。
-调用 sort 命令进行排序
-调用 uniq 命令进行去重
-调用 uniq -c 命令，去重且统计，在每个唯一行的前面加上该行出现的次数
-调用 awk '{print $2, $1}' 命令，将每一行输入记录分成多个字段，输出第二个字段和第一个字段，中间用空格分隔。
-awk命令处理的输入是uniq -c命令的输出，即把 [次数 城市] 这样的数据转换为 [城市 次数] 后输出。
-运行命令 bash distinctAndCountChineseCities.sh 后得到结果文件 distinct_and_count_chinese_cities.txt
+## Step1: Observe data structure of the input file  
+52.98.23.160/27,ZA,,JOHANNESBURG,
+
+## Step2: Summarize the rules of data
+1. The strings are separated by commas.  
+2. The second field in string is country.  
+3. The fourth field in string is city.  
+
+## Step3: Gradually implement the functions 
+1. Filter all data where the second field is "CN". `$2=="CN"`
+2. Output the fourth field of the corresponding data, then get all Chinese cities. `print $4`
+3. Call the `sort` command for sorting  
+4. Call the `uniq` command for deduplication 
+5. Call the `uniq -c` command for deduplication and counting, then add the number of occurrences of each unique line before the line.  
+6. Call the `awk '{print $2, $1}'` command. Input record of each line is divided into multiple fields. Output the second field and the first field, separated by a space.  
+7. The input processed by the `awk` command is the output of the `uniq -c` command, that is, the data like `count city` is converted to `city count` and then output.  
+8. After running the command `bash distinctAndCountChineseCities.sh`, the result file `distinct_and_count_chinese_cities.txt` is obtained.  
 
