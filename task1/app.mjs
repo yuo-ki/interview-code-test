@@ -1,6 +1,9 @@
 import express from 'express';
 //Store data can be stored in memory. Due to requirements of the question, the file module is introduced here. 
 import fs from 'fs';
+import crypto from 'crypto';
+import dotenv from 'dotenv';
+
 const app = express();
 
 // The local file path to store tasks  
@@ -16,13 +19,15 @@ class Task {
     }
 }
 
-// Check the username and password  
+dotenv.config();
+
+// Use the built-in encryption module of Node.js.
+// Store the encrypted login password in the configuration file to avoid storing password with plain text in the code. 
 function checkCredentials(username, password) {
-    // Considering time, the username and password are hardcoded here. It is not appropriate to store password in plaintext. 
-    // Other methods: 1. Obtain from configuration files or databases 2. JWT 3. Single sign-on 4. OAuth 5. Session 
-    const validUsername = 'mss_user';
-    const validPassword = 'mss_password';
-    return username === validUsername && password === validPassword;
+    const validUsername ='mss_user';
+    const hash = crypto.createHash('sha256').update(password).digest('hex');
+    const validHash = process.env.VALID_HASH; 
+    return username === validUsername && hash === validHash;
 }
 
 // Use middleware to verify username and password  

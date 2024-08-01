@@ -27,15 +27,19 @@ Task addition failed: `TypeError [ERR_INVALID_ARG_TYPE]: The "data" argument mus
 Convert parameter format of file processing method passed into the `fs` module. 
 
 ## Areas to be optimized
-- Considering time, when implementing user authentication, the username and password are hardcoded in the code.
-- Password plaintext storage is not appropriate.
+- Considering time, when implementing user authentication, I used the built-in encryption module of Node.js.
+- Store the encrypted login password in the configuration file to avoid storing password with plain text in the code.
 ### Other methods
-1. Obtain from configuration files or databases 
-2. JWT 
-3. Single sign-on 
-4. OAuth 
-5. Session 
+1. Replace the built-in encryption module with a more secure encryption algorithm 
+2. Obtain from database
+3. JWT 
+4. Single sign-on 
+5. OAuth 
+6. Session 
 
 ## Refactoring and Optimization
 - Firstly, after understanding ES6 modularization, the require method used at the beginning was changed to import method. 
 - Secondly, after understanding the streaming processing, the originally adopted file synchronous reading method was changed to streaming processing. During the processing, asynchronous situations need to be handled.  
+
+## Note
+For the convenience to verify code function, the login password is recorded here, and the value is `mss_password`.
